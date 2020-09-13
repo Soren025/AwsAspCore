@@ -1,0 +1,55 @@
+﻿@page
+@model AwsAspCore.Pages.Movies.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a href="@Url.Page("./Index", new { sortBy = "title" })">@Html.DisplayNameFor(model => model.Movie[0].Title)</a>
+            </th>
+            <th>
+                <a href="@Url.Page("./Index", new { sortBy = "releaseDate" })">@Html.DisplayNameFor(model => model.Movie[0].ReleaseDate)</a>
+            </th>
+            <th>
+                <a href="@Url.Page("./Index", new { sortBy = "genre" })">@Html.DisplayNameFor(model => model.Movie[0].Genre)</a>
+            </th>
+            <th>
+                <a href="@Url.Page("./Index", new { sortBy = "price" })">@Html.DisplayNameFor(model => model.Movie[0].Price)</a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Movie) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReleaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

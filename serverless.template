@@ -1,0 +1,108 @@
+{
+    "AWSTemplateFormatVersion":"2010-09-09",
+    "Transform":"AWS::Serverless-2016-10-31",
+    "Description":"An AWS Serverless Application that uses the ASP.NET Core framework running in Amazon Lambda.",
+    "Parameters":{
+        "MoviesTableName": {
+            "Type": "String",
+            "Default": "movies",
+            "Description": "Name for table that holds questions and answers",
+            "MinLength": "3",
+            "MaxLength": "50",
+            "AllowedPattern": "^[A-Za-z_.-]+$"
+        }
+    },
+    "Resources":{
+
+        "MoviesTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "TableName": {
+                    "Ref": "MoviesTableName"
+                },
+                "AttributeDefinitions": [
+                    {
+                        "AttributeName": "id",
+                        "AttributeType": "S"
+                    },
+                    {
+                        "AttributeName": "title",
+                        "AttributeType": "S"
+                    }
+                ],
+                "KeySchema": [
+                    {
+                        "AttributeName": "id",
+                        "KeyType": "HASH"
+                    }
+                ],
+                "GlobalSecondaryIndexes": [
+                    {
+                        "IndexName": "movies-orderedByTitle",
+                        "KeySchema": [
+                            {
+                                "AttributeName": "id",
+                                "KeyType": "HASH"
+                            },
+                            {
+                                "AttributeName": "title",
+                                "KeyType": "RANGE"
+                            }
+                        ],
+                        "Projection": {
+                            "ProjectionType": "ALL"
+                        }
+                    }
+                ],
+                "BillingMode": "PAY_PER_REQUEST"
+            }
+        },
+
+
+        "AspNetCoreFunction":{
+            "Type":"AWS::Serverless::Function",
+            "Properties":{
+                "Handler":"AwsAspCore::AwsAspCore.LambdaEntryPoint::FunctionHandlerAsync",
+                "Runtime":"dotnetcore3.1",
+                "CodeUri":"",
+                "MemorySize":512,
+                "Timeout":30,
+                "Role":null,
+                "Policies":[
+                    "AWSLambdaFullAccess"
+                ],
+                "Environment":{
+                    "Variables":{
+                        "MOVIES_TABLE_NAME": {
+                            "Ref": "MoviesTableName"
+                        }
+                    }
+                },
+                "Events":{
+                    "ProxyResource":{
+                        "Type":"Api",
+                        "Properties":{
+                            "Path":"/{proxy+}",
+                            "Method":"ANY"
+                        }
+                    },
+                    "RootResource":{
+                        "Type":"Api",
+                        "Properties":{
+                            "Path":"/",
+                            "Method":"ANY"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "Outputs":{
+        "ApiURL":{
+            "Description":"API endpoint URL for Prod environment",
+            "Value":{
+                "Fn::Sub":"https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+            }
+        }
+    }
+}
