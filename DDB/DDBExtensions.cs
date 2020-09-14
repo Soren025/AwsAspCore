@@ -27,7 +27,7 @@ namespace AwsAspCore.DDB
 
         public static class IndexNames
         {
-            public const string Movies_OrderedByTitle = "movies-orderedByTitle";
+
         }
 
         public static class AttributeNames
@@ -109,7 +109,6 @@ namespace AwsAspCore.DDB
             var response = await ddb.ScanAsync(new ScanRequest
             {
                 TableName = TableNames.Movies,
-                IndexName = IndexNames.Movies_OrderedByTitle,
             });
 
             return response.Items.Select(item => new Movie
@@ -129,7 +128,6 @@ namespace AwsAspCore.DDB
             var response = await ddb.ScanAsync(new ScanRequest
             {
                 TableName = TableNames.Movies,
-                IndexName = IndexNames.Movies_OrderedByTitle,
                 Select = Select.COUNT,
             });
 

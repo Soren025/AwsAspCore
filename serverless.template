@@ -36,24 +36,6 @@
                         "KeyType": "HASH"
                     }
                 ],
-                "GlobalSecondaryIndexes": [
-                    {
-                        "IndexName": "movies-orderedByTitle",
-                        "KeySchema": [
-                            {
-                                "AttributeName": "id",
-                                "KeyType": "HASH"
-                            },
-                            {
-                                "AttributeName": "title",
-                                "KeyType": "RANGE"
-                            }
-                        ],
-                        "Projection": {
-                            "ProjectionType": "ALL"
-                        }
-                    }
-                ],
                 "BillingMode": "PAY_PER_REQUEST"
             }
         },
