@@ -6,9 +6,8 @@ Example of AspCore in Aws
 - WebGL game imbeded with iframe
   - WebGL Game hosted in S3 bucket and given https status through amazon cloud front
   - WebGL Game reacts to url params
+  - WebGL Project: https://github.com/Soren025/WebGLTest
 
-Here is a link to the build
-https://mdgqogqpmj.execute-api.us-east-2.amazonaws.com/Prod
+Here is a link to the build: https://mdgqogqpmj.execute-api.us-east-2.amazonaws.com/Prod
 
-You will probably want this
-https://aws.amazon.com/visualstudio/
+You will probably want this: https://aws.amazon.com/visualstudio/
