@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Amazon.Lambda.Core;
 using Amazon.S3;
 using Amazon.S3.Model;
 
@@ -49,6 +50,38 @@ namespace AwsAspCore.Pages.Images
                 Expires = DateTime.UtcNow.AddMinutes(10),
             }))
             .ToList();
+        }
+
+        public async Task<IActionResult> OnPostDeleteAllAsync()
+        {
+            ListObjectsV2Response response;
+            List<S3Object> result = new List<S3Object>();
+
+            var request = new ListObjectsV2Request
+            {
+                BucketName = bucketName,
+            };
+
+            do
+            {
+                response = await s3.ListObjectsV2Async(request);
+                request.ContinuationToken = response.ContinuationToken;
+                result.AddRange(response.S3Objects);
+            }
+            while (!string.IsNullOrEmpty(response.ContinuationToken));
+
+            await s3.DeleteObjectsAsync(new DeleteObjectsRequest
+            {
+                BucketName = bucketName,
+                Quiet = true,
+                Objects = result.Select(obj => new KeyVersion
+                {
+                    Key = obj.Key,
+                })
+                .ToList(),
+            });
+
+            return RedirectToPage("./Index");
         }
     }
 }
