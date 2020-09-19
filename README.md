@@ -7,6 +7,11 @@ Example of AspCore in Aws
   - WebGL Game hosted in S3 bucket and given https status through amazon cloud front
   - WebGL Game reacts to url params
   - WebGL Project: https://github.com/Soren025/WebGLTest
+- File Uploading
+  - Image Uploads to S3
+  - All images in said S3 displayed
+  - Requires changes to Api Gateway through aws portal (does not work out of the box)
+    - Follow these steps https://stackoverflow.com/a/61752279/3159342
 
 Here is a link to the build: https://mdgqogqpmj.execute-api.us-east-2.amazonaws.com/Prod
 

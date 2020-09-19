@@ -20,6 +20,10 @@ namespace AwsAspCore.Pages.Images
             bucketName = Environment.GetEnvironmentVariable("IMAGE_STORAGE_BUCKET_NAME");
         }
 
+        // IMPORTANT
+        // Out of the box this won't work
+        // Api Gateway out of the box malforms the file binary corrupting it
+        // Follow the steps here: https://stackoverflow.com/a/61752279/3159342 to make it work
         [BindProperty]
         public IFormFile Upload { get; set; }
 
