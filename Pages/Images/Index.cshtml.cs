@@ -70,16 +70,19 @@ namespace AwsAspCore.Pages.Images
             }
             while (!string.IsNullOrEmpty(response.ContinuationToken));
 
-            await s3.DeleteObjectsAsync(new DeleteObjectsRequest
+            if (result.Count > 0)
             {
-                BucketName = bucketName,
-                Quiet = true,
-                Objects = result.Select(obj => new KeyVersion
+                await s3.DeleteObjectsAsync(new DeleteObjectsRequest
                 {
-                    Key = obj.Key,
-                })
-                .ToList(),
-            });
+                    BucketName = bucketName,
+                    Quiet = true,
+                    Objects = result.Select(obj => new KeyVersion
+                    {
+                        Key = obj.Key,
+                    })
+                    .ToList(),
+                });
+            }
 
             return RedirectToPage("./Index");
         }
