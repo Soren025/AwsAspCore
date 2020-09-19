@@ -1,0 +1,16 @@
+﻿@page
+@model AwsAspCore.Pages.Images.IndexModel
+
+<h2>Index</h2>
+
+<div>
+    <a asp-page="./Upload">Upload</a>
+</div>
+
+<div>
+    @foreach (var url in Model.Images)
+    {
+        <img src="@url" />
+    }
+</div>
+

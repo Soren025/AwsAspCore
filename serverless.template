@@ -10,6 +10,14 @@
             "MinLength": "3",
             "MaxLength": "50",
             "AllowedPattern": "^[A-Za-z_.-]+$"
+        },
+        "ImageStorageBucketName": {
+            "Type": "String",
+            "Default": "image-storage",
+            "Description": "Name of the S3 bucket used to store images",
+            "MinLength": "3",
+            "MaxLength": "50",
+            "AllowedPattern": "^[A-Za-z_.-]+$"
         }
     },
     "Resources":{
@@ -24,10 +32,6 @@
                     {
                         "AttributeName": "id",
                         "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "title",
-                        "AttributeType": "S"
                     }
                 ],
                 "KeySchema": [
@@ -40,6 +44,14 @@
             }
         },
 
+        "ImageStorage": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {
+                    "Ref": "ImageStorageBucketName"
+                }
+            }
+        },
 
         "AspNetCoreFunction":{
             "Type":"AWS::Serverless::Function",
@@ -57,6 +69,9 @@
                     "Variables":{
                         "MOVIES_TABLE_NAME": {
                             "Ref": "MoviesTableName"
+                        },
+                        "IMAGE_STORAGE_BUCKET_NAME": {
+                            "Ref": "ImageStorageBucketName"
                         }
                     }
                 },

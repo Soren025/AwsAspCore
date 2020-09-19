@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Amazon.DynamoDBv2;
+using Amazon.S3;
 
 namespace AwsAspCore
 {
@@ -37,6 +38,7 @@ namespace AwsAspCore
             });
 
             services.AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>();
+            services.AddSingleton<IAmazonS3, AmazonS3Client>();
 
             services.AddRazorPages();
         }
