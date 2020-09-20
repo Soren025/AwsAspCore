@@ -10,8 +10,7 @@ Example of AspCore in Aws
 - File Uploading
   - Image Uploads to S3
   - All images in said S3 displayed
-  - Requires changes to Api Gateway through aws portal (does not work out of the box)
-    - Follow these steps https://stackoverflow.com/a/61752279/3159342
+  - Button to delete all the images
 
 Here is a link to the build: https://awsaspcore.codari.co/
 

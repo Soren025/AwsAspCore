@@ -12,7 +12,7 @@
     "framework"     : "netcoreapp3.1",
     "s3-prefix"     : "AwsAspCore/",
     "template"      : "serverless.template",
-    "template-parameters" : "\"MoviesTableName\"=\"learning-asp-movies\";\"ImageStorageBucketName\"=\"learning-asp-image-storage\"",
-    "s3-bucket"           : "learning-asp",
-    "stack-name"          : "asp-core-razor"
+    "template-parameters" : "\"MoviesTableName\"=\"aws-asp-core-movies\";\"ImageStorageBucketName\"=\"aws-asp-core-image-storage\"",
+    "s3-bucket"           : "aws-asp-core",
+    "stack-name"          : "aws-asp-core"
 }
