@@ -13,6 +13,6 @@ Example of AspCore in Aws
   - Requires changes to Api Gateway through aws portal (does not work out of the box)
     - Follow these steps https://stackoverflow.com/a/61752279/3159342
 
-Here is a link to the build: https://yxhpyy1aeh.execute-api.us-east-2.amazonaws.com/Prod
+Here is a link to the build: https://awsaspcore.codari.co/
 
 You will probably want this: https://aws.amazon.com/visualstudio/
