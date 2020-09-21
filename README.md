@@ -13,5 +13,6 @@ Example of AspCore in Aws
   - Button to delete all the images
 
 Here is a link to the build: https://awsaspcore.codari.co/
+Not included in the project is my domain and domain certificate, but you can eaisly link a custom domain
 
 You will probably want this: https://aws.amazon.com/visualstudio/
