@@ -63,7 +63,30 @@
                 "Timeout":30,
                 "Role":null,
                 "Policies":[
-                    "AWSLambdaFullAccess"
+                    {
+                        "DynamoDBCrudPolicy": {
+                            "TableName": {
+                                "Ref": "MoviesTable"
+                            }
+                        }
+                    },
+                    {
+                        "S3CrudPolicy": {
+                            "BucketName": {
+                                "Ref": "ImageStorage"
+                            }
+                        }
+                    },
+                    {
+                        "Statement": {
+                            "Effect": "Allow",
+                            "Action": [
+                                "ssm:PutParameter",
+                                "ssm:GetParametersByPath"
+                            ],
+                            "Resource": "*"
+                        }
+                    }
                 ],
                 "Environment":{
                     "Variables":{
@@ -98,7 +121,7 @@
         "ApiURL":{
             "Description":"API endpoint URL for Prod environment",
             "Value":{
-                "Fn::Sub":"https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+                "Fn::Sub":"https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
             }
         }
     }

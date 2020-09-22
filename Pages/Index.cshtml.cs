@@ -30,11 +30,11 @@ namespace AwsAspCore.Pages
 
         public async Task OnGetAsync(string message)
         {
-            SessionId = HttpContext.Session.GetString("KEY");
+            SessionId = HttpContext.Session.GetString("session-guid");
             if (SessionId == null)
             {
                 SessionId = Guid.NewGuid().ToString();
-                HttpContext.Session.SetString("KEY", SessionId);
+                HttpContext.Session.SetString("session-guid", SessionId);
             }
 
             Message = message ?? "";

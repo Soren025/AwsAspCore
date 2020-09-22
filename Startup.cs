@@ -37,10 +37,10 @@ namespace AwsAspCore
                 options.Cookie.IsEssential = true;
             });
 
-            // Nessissary for persisting session keys
+            // Testing out using SSM as data protection for session keys
             // https://aws.amazon.com/blogs/developer/aws-ssm-asp-net-core-data-protection-provider/
             services.AddDataProtection()
-                .PersistKeysToAWSSystemsManager("/AwsAspCore/DataProtection");
+                .PersistKeysToAWSSystemsManager("/Public/AspNetCoreProject/DataProtection");
 
             services.AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>();
             services.AddSingleton<IAmazonS3, AmazonS3Client>();
