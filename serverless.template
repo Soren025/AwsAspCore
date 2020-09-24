@@ -53,6 +53,10 @@
             }
         },
 
+        "AspNetCoreHttpApi": {
+            "Type": "AWS::Serverless::HttpApi"
+        },
+
         "AspNetCoreFunction":{
             "Type":"AWS::Serverless::Function",
             "Properties":{
@@ -102,6 +106,9 @@
                     "ProxyResource":{
                         "Type":"HttpApi",
                         "Properties":{
+                            "ApiId": {
+                                "Ref": "AspNetCoreHttpApi"
+                            },
                             "Path":"/{proxy+}",
                             "Method":"ANY"
                         }
@@ -109,6 +116,9 @@
                     "RootResource":{
                         "Type":"HttpApi",
                         "Properties":{
+                            "ApiId": {
+                                "Ref": "AspNetCoreHttpApi"
+                            },
                             "Path":"/",
                             "Method":"ANY"
                         }
@@ -121,7 +131,7 @@
         "ApiURL":{
             "Description":"API endpoint URL for Prod environment",
             "Value":{
-                "Fn::Sub":"https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
+                "Fn::Sub":"https://${AspNetCoreHttpApi}.execute-api.${AWS::Region}.amazonaws.com/"
             }
         }
     }
