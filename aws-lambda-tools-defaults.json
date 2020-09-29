@@ -13,6 +13,6 @@
     "s3-prefix"     : "AwsAspCore/",
     "template"      : "serverless.template",
     "template-parameters" : "\"MoviesTableName\"=\"aws-asp-core-movies\";\"ImageStorageBucketName\"=\"aws-asp-core-image-storage\"",
-    "s3-bucket"           : "aws-asp-core-image-storage",
+    "s3-bucket"           : "codari-cloudformation",
     "stack-name"          : "aws-asp-core"
 }
