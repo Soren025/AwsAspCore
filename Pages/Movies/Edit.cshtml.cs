@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+
+using Amazon.DynamoDBv2;
+
+using AwsAspCore.DDB;
+using AwsAspCore.Models;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using AwsAspCore.Models;
-using Amazon.DynamoDBv2;
-using AwsAspCore.DDB;
 
 namespace AwsAspCore.Pages.Movies
 {
