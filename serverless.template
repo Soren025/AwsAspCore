@@ -54,9 +54,122 @@
         },
 
         "AspNetCoreHttpApi": {
-            "Type": "AWS::Serverless::HttpApi"
+            "Type": "AWS::ApiGatewayV2::Api",
+            "Properties": {
+                "Name": "aws-asp-core-webapp",
+                "ProtocolType": "HTTP"
+            }
         },
-
+        "AspNetCoreHttpStage": {
+            "Type": "AWS::ApiGatewayV2::Stage",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AspNetCoreHttpApi"
+                },
+                "StageName": "$default",
+                "AutoDeploy": true
+            }
+        },
+        "AspNetCoreHttpApiMapping": {
+            "Type" : "AWS::ApiGatewayV2::ApiMapping",
+            "Properties" : {
+                "DomainName": "awsaspcore.codari.co",
+                "ApiId": {
+                    "Ref": "AspNetCoreHttpApi"
+                },
+                "Stage": {
+                    "Ref": "AspNetCoreHttpStage"
+                }
+            }
+        },
+        "AspNetCoreHttpApiMappingWWW": {
+            "Type" : "AWS::ApiGatewayV2::ApiMapping",
+            "Properties" : {
+                "DomainName": "www.awsaspcore.codari.co",
+                "ApiId": {
+                    "Ref": "AspNetCoreHttpApi"
+                },
+                "Stage": {
+                    "Ref": "AspNetCoreHttpStage"
+                }
+            }
+        },
+        "AspNetCoreHttpRootRoute": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AspNetCoreHttpApi"
+                },
+                "RouteKey": "ANY /",
+                "Target": {
+                    "Fn::Sub": "integrations/${AspNetCoreHttpRootIntegration}"
+                }
+            }
+        },
+        "AspNetCoreHttpRootIntegration": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AspNetCoreHttpApi"
+                },
+                "IntegrationType": "AWS_PROXY",
+                "PayloadFormatVersion": 2.0,
+                "IntegrationUri": {
+                    "Fn::Sub": [
+                        "arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${function}/invocations",
+                        {
+                            "region": {
+                                "Ref": "AWS::Region"
+                            },
+                            "function": {
+                                "Fn::GetAtt": [
+                                    "AspNetCoreFunction",
+                                    "Arn"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "AspNetCoreHttpProxyRoute": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AspNetCoreHttpApi"
+                },
+                "RouteKey": "ANY /{proxy+}",
+                "Target": {
+                    "Fn::Sub": "integrations/${AspNetCoreHttpProxyIntegration}"
+                }
+            }
+        },
+        "AspNetCoreHttpProxyIntegration": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+                "ApiId": {
+                    "Ref": "AspNetCoreHttpApi"
+                },
+                "IntegrationType": "AWS_PROXY",
+                "PayloadFormatVersion": 2.0,
+                "IntegrationUri": {
+                    "Fn::Sub": [
+                        "arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${function}/invocations",
+                        {
+                            "region": {
+                                "Ref": "AWS::Region"
+                            },
+                            "function": {
+                                "Fn::GetAtt": [
+                                    "AspNetCoreFunction",
+                                    "Arn"
+                                ]
+                            }
+                        }
+                    ]
+                }
+            }
+        },
         "AspNetCoreFunction":{
             "Type":"AWS::Serverless::Function",
             "Properties":{
@@ -101,29 +214,17 @@
                             "Ref": "ImageStorageBucketName"
                         }
                     }
-                },
-                "Events":{
-                    "ProxyResource":{
-                        "Type":"HttpApi",
-                        "Properties":{
-                            "ApiId": {
-                                "Ref": "AspNetCoreHttpApi"
-                            },
-                            "Path":"/{proxy+}",
-                            "Method":"ANY"
-                        }
-                    },
-                    "RootResource":{
-                        "Type":"HttpApi",
-                        "Properties":{
-                            "ApiId": {
-                                "Ref": "AspNetCoreHttpApi"
-                            },
-                            "Path":"/",
-                            "Method":"ANY"
-                        }
-                    }
                 }
+            }
+        },
+        "AspNetCoreFunctionPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "Action": "lambda:InvokeFunction",
+                "FunctionName": {
+                    "Ref": "AspNetCoreFunction"
+                },
+                "Principal": "apigateway.amazonaws.com"
             }
         }
     },
