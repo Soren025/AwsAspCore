@@ -203,6 +203,15 @@
                             ],
                             "Resource": "*"
                         }
+                    },
+                    {
+                        "Statement": {
+                            "Effect": "Allow",
+                            "Action": [
+                                "rekognition:*"
+                            ],
+                            "Resource": "*"
+                        }
                     }
                 ],
                 "Environment":{

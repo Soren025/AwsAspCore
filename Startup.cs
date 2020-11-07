@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Amazon.DynamoDBv2;
+using Amazon.Rekognition;
 using Amazon.S3;
 
 using Microsoft.AspNetCore.Builder;
@@ -39,6 +40,7 @@ namespace AwsAspCore
 
             services.AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>();
             services.AddSingleton<IAmazonS3, AmazonS3Client>();
+            services.AddSingleton<IAmazonRekognition, AmazonRekognitionClient>();
 
             services.AddRazorPages();
         }

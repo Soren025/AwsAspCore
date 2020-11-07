@@ -1,0 +1,28 @@
+﻿@page
+@model AwsAspCore.Pages.ContentModModel
+
+<h2>Content Moderation</h2>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="file" asp-for="Upload" />
+    <input type="submit" />
+</form>
+
+<div>
+    <h4>Results</h4>
+    <hr />
+    <dl class="dl-horizontal">
+
+        @if (Model.Result != null)
+        {
+            @foreach (var label in Model.Result.ModerationLabels)
+            {
+                <hr />
+                <div>
+                    @label.Name : @label.ParentName
+                    @label.Confidence %
+                </div>
+            }
+        }
+    </dl>
+</div>
