@@ -36,10 +36,11 @@
                     <li><a href="@Url.Page("/Movies/Index", new { sortBy = "title" })">Movies</a></li>
                     <li><a href="@Url.Page("/Game")">Game</a></li>
                     <li><a href="@Url.Page("/Game", new { color = "red" })">Game Red</a></li>
-                    <li><a href="@Url.Page("/Game", new { color = "blue" })">Game Blue</a></li>
-                    <li><a href="@Url.Page("/Game", new { color = "green" })">Game Green</a></li>
+                    @*<li><a href="@Url.Page("/Game", new { color = "blue" })">Game Blue</a></li>
+                    <li><a href="@Url.Page("/Game", new { color = "green" })">Game Green</a></li>*@
                     <li><a asp-page="/Images/Index">Images</a></li>
                     <li><a asp-page="/ContentMod">Content Moderation</a></li>
+                    <li><a asp-page="/Cognito">Cognito</a></li>
                 </ul>
             </div>
         </div>
