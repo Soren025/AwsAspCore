@@ -19,11 +19,13 @@ namespace AwsAspCore.Pages
     {
         private SignInManager<CognitoUser> signInManager;
         private CognitoUserManager<CognitoUser> userManager;
+        private RoleManager<CognitoRole> roleManager;
 
-        public CognitoModel(SignInManager<CognitoUser> signInManager, UserManager<CognitoUser> userManager)
+        public CognitoModel(SignInManager<CognitoUser> signInManager, UserManager<CognitoUser> userManager, RoleManager<CognitoRole> roleManager)
         {
             this.signInManager = signInManager;
             this.userManager = userManager as CognitoUserManager<CognitoUser>;
+            this.roleManager = roleManager;
         }
 
         public string Message { get; set; }
@@ -56,6 +58,21 @@ namespace AwsAspCore.Pages
         {
             await signInManager.SignOutAsync();
             return RedirectToPage("/Cognito", new { message = "Logged Out!" });
+        }
+
+        public async Task<IActionResult> OnPostToggleRedRoleAsync()
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (await userManager.IsInRoleAsync(user, "red"))
+            {
+                await userManager.RemoveFromRoleAsync(user, "red");
+                return RedirectToPage("/Cognito", new { message = "No longer in the red role. You will no longer be able to play the red game when you next log in" });
+            }
+            else
+            {
+                await userManager.AddToRoleAsync(user, "red");
+                return RedirectToPage("/Cognito", new { message = "Your now in the red role! Relog to play the red game." });
+            }
         }
     }
 }

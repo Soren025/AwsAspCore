@@ -12,8 +12,13 @@
 @if (Model.SignedIn)
 {
     <text>
-    Welcome @Model.CUser.Username
+        Welcome @Model.CUser.Username
     </text>
+    <br />
+    <br />
+    <form method="post">
+        <input type="submit" value="Toggle Red Role" asp-page-handler="ToggleRedRole" />
+    </form>
     <br />
     <br />
     <form method="post">

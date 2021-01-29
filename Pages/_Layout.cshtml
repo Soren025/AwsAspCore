@@ -35,7 +35,10 @@
                     <li><a asp-page="/Help">Help</a></li>
                     <li><a href="@Url.Page("/Movies/Index", new { sortBy = "title" })">Movies</a></li>
                     <li><a href="@Url.Page("/Game")">Game</a></li>
-                    <li><a href="@Url.Page("/Game", new { color = "red" })">Game Red</a></li>
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("red"))
+                    {
+                        <li><a href="@Url.Page("/Game", new { color = "red" })">Game Red</a></li>
+                    }
                     @*<li><a href="@Url.Page("/Game", new { color = "blue" })">Game Blue</a></li>
                     <li><a href="@Url.Page("/Game", new { color = "green" })">Game Green</a></li>*@
                     <li><a asp-page="/Images/Index">Images</a></li>
