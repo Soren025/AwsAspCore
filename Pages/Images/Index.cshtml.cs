@@ -54,6 +54,11 @@ namespace AwsAspCore.Pages.Images
 
         public async Task<IActionResult> OnPostDeleteAllAsync()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Cognito", new { message = "You need to be logged in to delete all the images" });
+            }
+
             ListObjectsV2Response response;
             List<S3Object> result = new List<S3Object>();
 

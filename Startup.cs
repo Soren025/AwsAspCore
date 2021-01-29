@@ -1,6 +1,8 @@
 ﻿using System;
 
+using Amazon.CognitoIdentityProvider;
 using Amazon.DynamoDBv2;
+using Amazon.Extensions.CognitoAuthentication;
 using Amazon.Rekognition;
 using Amazon.S3;
 
@@ -36,13 +38,23 @@ namespace AwsAspCore
             // Testing out using SSM as data protection for session keys
             // https://aws.amazon.com/blogs/developer/aws-ssm-asp-net-core-data-protection-provider/
             services.AddDataProtection()
-                .PersistKeysToAWSSystemsManager("/Public/AspNetCoreProject/DataProtection");
+                .PersistKeysToAWSSystemsManager("/Codari/AwsAspCore/DataProtection");
 
             services.AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>();
             services.AddSingleton<IAmazonS3, AmazonS3Client>();
             services.AddSingleton<IAmazonRekognition, AmazonRekognitionClient>();
 
             services.AddRazorPages();
+
+            IAmazonCognitoIdentityProvider identityProvider = new AmazonCognitoIdentityProviderClient();
+            string userPoolId = Environment.GetEnvironmentVariable("COGNITO_USER_POOL_ID");
+            string userPoolClientId = Environment.GetEnvironmentVariable("COGNITO_USER_POOL_CLIENT_ID");
+            string userPoolClientSecret = Environment.GetEnvironmentVariable("COGNITO_USER_POOL_CLIENT_SECRET");
+
+            services.AddSingleton(identityProvider);
+            services.AddSingleton(new CognitoUserPool(userPoolId, userPoolClientId, identityProvider, userPoolClientSecret));
+
+            services.AddCognitoIdentity();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +77,7 @@ namespace AwsAspCore
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseSession();
 
