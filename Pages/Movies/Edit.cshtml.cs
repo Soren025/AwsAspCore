@@ -25,6 +25,11 @@ namespace AwsAspCore.Pages.Movies
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Cognito", new { message = "You need to be logged in to edit a movie" });
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -41,6 +46,11 @@ namespace AwsAspCore.Pages.Movies
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Cognito", new { message = "You need to be logged in to edit a movie" });
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();

@@ -11,28 +11,28 @@
 
 @if (Model.SignedIn)
 {
-    @Model.CUser.Status
-    @Model.CUser.UserID
-    @Model.CUser.Username
+    <text>
+    Welcome @Model.CUser.Username
+    </text>
+    <br />
     <br />
     <form method="post">
-        <input type="submit" value="Logout" asp-page-handler="Logout"/>
+        <input type="submit" value="Logout" asp-page-handler="Logout" />
     </form>
 }
 else
 {
     <form method="post">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" />
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" />
         <label for="password">Password</label>
         <input type="password" id="password" name="password" />
         <label for="rememberMe">rememberMe</label>
         <input type="checkbox" id="rememberMe" name="rememberMe" />
-        <input type="submit" value="Login" asp-page-handler="Login"/>
+        <input type="submit" value="Login" asp-page-handler="Login" />
     </form>
-}
 
-@*<a href="https://auth.awsaspcore.codari.co/login?response_type=code&client_id=1qqtq0eqmra2g2c4oibl6t1vtv&redirect_uri=https://awsaspcore.codari.co/Cognito">Login</a>
     <br />
-    <br />
-    <a href="https://auth.awsaspcore.codari.co/logout?response_type=code&client_id=1qqtq0eqmra2g2c4oibl6t1vtv&redirect_uri=https://awsaspcore.codari.co/Cognito">Logout</a>*@
+
+    <a href="https://auth.awsaspcore.codari.co/signup?response_type=token&client_id=1l0770l149iano9rs8hu1lqh5c&redirect_uri=https://awsaspcore.codari.co/Cognito">Sign Up</a>
+}

@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 using Amazon.AspNetCore.Identity.Cognito;
+using Amazon.DynamoDBv2;
 using Amazon.Extensions.CognitoAuthentication;
+using Amazon.Lambda.Core;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -31,15 +34,14 @@ namespace AwsAspCore.Pages
 
         public async Task OnGetAsync(string message = null)
         {
-            Message = message;
+            Message = HttpUtility.UrlDecode(message);
             SignedIn = signInManager.IsSignedIn(User);
             CUser = await userManager.GetUserAsync(User);
         }
 
-        public async Task<ActionResult> OnPostLoginAsync(string email, string password, bool rememberMe = false)
+        public async Task<IActionResult> OnPostLoginAsync(string username, string password, bool rememberMe = false)
         {
-            var user = await userManager.FindByEmailAsync(email);
-            var result = await signInManager.PasswordSignInAsync(user, password, rememberMe, false);
+            var result = await signInManager.PasswordSignInAsync(username, password, rememberMe, false);
             if (result.Succeeded)
             {
                 return RedirectToPage("/Cognito", new { message = "Login Success!" });
@@ -50,7 +52,7 @@ namespace AwsAspCore.Pages
             }
         }
 
-        public async Task<ActionResult> OnPostLogoutAsync()
+        public async Task<IActionResult> OnPostLogoutAsync()
         {
             await signInManager.SignOutAsync();
             return RedirectToPage("/Cognito", new { message = "Logged Out!" });

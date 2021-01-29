@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -11,9 +7,16 @@ namespace AwsAspCore.Pages
     {
         public string Color { get; set; }
 
-        public void OnGet(string color)
+        public IActionResult OnGet(string color)
         {
+            if (color == "red" && !User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Cognito", new { message = "You need to be logged in to play the red game" });
+            }
+
             Color = color ?? "none";
+
+            return Page();
         }
     }
 }

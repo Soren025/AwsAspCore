@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Amazon.S3;
 using Amazon.S3.Model;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -23,8 +24,23 @@ namespace AwsAspCore.Pages.Images
         [BindProperty]
         public IFormFile Upload { get; set; }
 
+        public IActionResult OnGetAsync()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Cognito", new { message = "You need to be logged in to upload images" });
+            }
+
+            return Page();
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Cognito", new { message = "You need to be logged in to upload images" });
+            }
+
             using (var fileStream = Upload.OpenReadStream())
             {
                 await s3.PutObjectAsync(new PutObjectRequest

@@ -22,6 +22,11 @@ namespace AwsAspCore.Pages.Movies
 
         public IActionResult OnGet()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Cognito", new { message = "You need to be logged in to create a movie" });
+            }
+
             return Page();
         }
 
@@ -32,6 +37,11 @@ namespace AwsAspCore.Pages.Movies
         // more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Cognito", new { message = "You need to be logged in to create a movie" });
+            }
+
             if (!ModelState.IsValid)
             {
                 return Page();
