@@ -18,6 +18,18 @@
             "MinLength": "3",
             "MaxLength": "50",
             "AllowedPattern": "^[A-Za-z_.-]+$"
+        },
+        "CognitoUserPoolId": {
+            "Type": "AWS::SSM::Parameter::Value<String>",
+            "Default": "/Codari/AwsAspCore/Cognito/UserPoolId"
+        },
+        "CognitoUserPoolClientId": {
+            "Type": "AWS::SSM::Parameter::Value<String>",
+            "Default": "/Codari/AwsAspCore/Cognito/UserPoolClientId"
+        },
+        "CognitoUserPoolClientSecret": {
+            "Type": "AWS::SSM::Parameter::Value<String>",
+            "Default": "/Codari/AwsAspCore/Cognito/UserPoolClientSecret"
         }
     },
     "Resources":{
@@ -221,6 +233,15 @@
                         },
                         "IMAGE_STORAGE_BUCKET_NAME": {
                             "Ref": "ImageStorageBucketName"
+                        },
+                        "COGNITO_USER_POOL_ID": {
+                            "Ref" : "CognitoUserPoolId"
+                        },
+                        "COGNITO_USER_POOL_CLIENT_ID": {
+                            "Ref" : "CognitoUserPoolClientId"
+                        },
+                        "COGNITO_USER_POOL_CLIENT_SECRET": {
+                            "Ref" : "CognitoUserPoolClientSecret"
                         }
                     }
                 }

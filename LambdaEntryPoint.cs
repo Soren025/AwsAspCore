@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Amazon.Lambda.AspNetCoreServer;
 
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace AwsAspCore
