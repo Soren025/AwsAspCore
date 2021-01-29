@@ -18,7 +18,7 @@ namespace AwsAspCore.Pages
 
                 if (!User.IsInRole("red"))
                 {
-                    return RedirectToPage("/Index", new { message = "You need to have the red group to play the red game" });
+                    return RedirectToPage("/Cognito", new { message = "You need to have the red group to play the red game" });
                 }
             }
 

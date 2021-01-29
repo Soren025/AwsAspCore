@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -66,7 +67,7 @@ namespace AwsAspCore.Pages
             if (await userManager.IsInRoleAsync(user, "red"))
             {
                 await userManager.RemoveFromRoleAsync(user, "red");
-                return RedirectToPage("/Cognito", new { message = "No longer in the red role. You will no longer be able to play the red game when you next log in" });
+                return RedirectToPage("/Cognito", new { message = "No longer in the red role. You will no longer be able to play the red game when you next log in." });
             }
             else
             {
