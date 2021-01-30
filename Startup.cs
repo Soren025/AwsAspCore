@@ -33,9 +33,10 @@ namespace AwsAspCore
         {
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromMinutes(5);
+                options.Cookie.Domain = "awsaspcore.codari.co";
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
 
             // Testing out using SSM as data protection for session keys
@@ -50,6 +51,7 @@ namespace AwsAspCore
             services.AddDistributedDynamoDbCache(options =>
             {
                 options.TableName = Environment.GetEnvironmentVariable("CACHE_TABLE_NAME");
+                options.TtlAttribute = Environment.GetEnvironmentVariable("CACHE_TABLE_TTL_ATTRIBUTE_NAME");
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
 

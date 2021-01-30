@@ -19,6 +19,10 @@
             "MaxLength": "50",
             "AllowedPattern": "^[A-Za-z_.-]+$"
         },
+        "CacheTableTTLAttributeName": {
+            "Type": "String",
+            "Default": "TTL"
+        },
         "ImageStorageBucketName": {
             "Type": "String",
             "Default": "image-storage",
@@ -81,6 +85,12 @@
                         "KeyType": "HASH"
                     }
                 ],
+                "TimeToLiveSpecification": {
+                    "Enabled": true,
+                    "AttributeName": {
+                        "Ref": "CacheTableTTLAttributeName"
+                    }
+                },
                 "BillingMode": "PAY_PER_REQUEST"
             }
         },
@@ -278,6 +288,9 @@
                         },
                         "CACHE_TABLE_NAME": {
                             "Ref": "CacheTable"
+                        },
+                        "CACHE_TABLE_TTL_ATTRIBUTE_NAME": {
+                            "Ref": "CacheTableTTLAttributeName"
                         },
                         "IMAGE_STORAGE_BUCKET_NAME": {
                             "Ref": "ImageStorageBucketName"

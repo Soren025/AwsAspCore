@@ -53,7 +53,8 @@ namespace AwsAspCore.DDB.Caching
         public async Task<byte[]> GetAsync(string key, CancellationToken token = default(CancellationToken))
         {
             var value = await _table.GetItemAsync(key);
-            if (value == null || value["Session"] == null)
+            if (value == null || value["Session"] == null
+                || (value.TryGetValue(_ttlfield, out var entry) && DateTimeOffset.Now.ToUniversalTime().ToUnixTimeSeconds() >= entry.AsLong()))
             {
                 return null;
             }
@@ -64,10 +65,12 @@ namespace AwsAspCore.DDB.Caching
         public void Refresh(string key)
         {
             var value = _table.GetItemAsync(key).Result;
-            if (value == null || value["ExpiryType"] == null || value["ExpiryType"] != "Sliding")
+            if (value == null || value["ExpiryType"] == null || value["ExpiryType"] != "Sliding"
+                || (value.TryGetValue(_ttlfield, out var entry) && DateTimeOffset.Now.ToUniversalTime().ToUnixTimeSeconds() >= entry.AsLong()))
             {
                 return;
             }
+
             value[_ttlfield] = DateTimeOffset.Now.ToUniversalTime().ToUnixTimeSeconds() + (_sessionMinutes * 60);
 
             Task.Run(() => Set(key, value["Session"].AsByteArray(), new DistributedCacheEntryOptions { SlidingExpiration = new TimeSpan(0, _sessionMinutes, 0) }));
