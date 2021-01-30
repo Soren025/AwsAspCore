@@ -11,6 +11,14 @@
             "MaxLength": "50",
             "AllowedPattern": "^[A-Za-z_.-]+$"
         },
+        "CacheTableName": {
+            "Type": "String",
+            "Default": "cache",
+            "Description": "Name for table that holds ASP .NET cache data",
+            "MinLength": "3",
+            "MaxLength": "50",
+            "AllowedPattern": "^[A-Za-z_.-]+$"
+        },
         "ImageStorageBucketName": {
             "Type": "String",
             "Default": "image-storage",
@@ -49,6 +57,27 @@
                 "KeySchema": [
                     {
                         "AttributeName": "id",
+                        "KeyType": "HASH"
+                    }
+                ],
+                "BillingMode": "PAY_PER_REQUEST"
+            }
+        },
+        "CacheTable": {
+            "Type": "AWS::DynamoDB::Table",
+            "Properties": {
+                "TableName": {
+                    "Ref": "CacheTableName"
+                },
+                "AttributeDefinitions": [
+                    {
+                        "AttributeName": "SessionId",
+                        "AttributeType": "S"
+                    }
+                ],
+                "KeySchema": [
+                    {
+                        "AttributeName": "SessionId",
                         "KeyType": "HASH"
                     }
                 ],
@@ -200,6 +229,13 @@
                         }
                     },
                     {
+                        "DynamoDBCrudPolicy": {
+                            "TableName": {
+                                "Ref": "CacheTable"
+                            }
+                        }
+                    },
+                    {
                         "S3CrudPolicy": {
                             "BucketName": {
                                 "Ref": "ImageStorage"
@@ -239,6 +275,9 @@
                     "Variables":{
                         "MOVIES_TABLE_NAME": {
                             "Ref": "MoviesTableName"
+                        },
+                        "CACHE_TABLE_NAME": {
+                            "Ref": "CacheTable"
                         },
                         "IMAGE_STORAGE_BUCKET_NAME": {
                             "Ref": "ImageStorageBucketName"

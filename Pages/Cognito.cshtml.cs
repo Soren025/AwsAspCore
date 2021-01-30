@@ -57,12 +57,22 @@ namespace AwsAspCore.Pages
 
         public async Task<IActionResult> OnPostLogoutAsync()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Cognito", new { message = "You are already logged out" });
+            }
+
             await signInManager.SignOutAsync();
             return RedirectToPage("/Cognito", new { message = "Logged Out!" });
         }
 
         public async Task<IActionResult> OnPostToggleRedRoleAsync()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Cognito", new { message = "You need to be logged in to toggle your red role" });
+            }
+
             var user = await userManager.GetUserAsync(User);
             if (await userManager.IsInRoleAsync(user, "red"))
             {

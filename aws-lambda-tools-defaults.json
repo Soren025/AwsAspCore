@@ -12,7 +12,7 @@
     "framework"     : "netcoreapp3.1",
     "s3-prefix"     : "AwsAspCore/",
     "template"      : "serverless.template",
-    "template-parameters" : "\"MoviesTableName\"=\"aws-asp-core-movies\";\"ImageStorageBucketName\"=\"aws-asp-core-image-storage\"",
+    "template-parameters" : "\"MoviesTableName\"=\"aws-asp-core-movies\";\"CacheTableName\"=\"aws-asp-core-cache\";\"ImageStorageBucketName\"=\"aws-asp-core-image-storage\";\"CognitoUserPoolId\"=\"/Codari/AwsAspCore/Cognito/UserPoolId\";\"CognitoUserPoolClientId\"=\"/Codari/AwsAspCore/Cognito/UserPoolClientId\";\"CognitoUserPoolClientSecret\"=\"/Codari/AwsAspCore/Cognito/UserPoolClientSecret\"",
     "s3-bucket"           : "codari-cloudformation",
     "stack-name"          : "aws-asp-core"
 }

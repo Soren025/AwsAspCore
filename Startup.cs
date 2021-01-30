@@ -3,11 +3,16 @@
 using Amazon.CognitoIdentityProvider;
 using Amazon.DynamoDBv2;
 using Amazon.Extensions.CognitoAuthentication;
+using Amazon.Extensions.NETCore.Setup;
 using Amazon.Rekognition;
 using Amazon.S3;
 
+using AwsAspCore.DDB.Caching;
+
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -26,8 +31,6 @@ namespace AwsAspCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDistributedMemoryCache();
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(5);
@@ -40,9 +43,15 @@ namespace AwsAspCore
             services.AddDataProtection()
                 .PersistKeysToAWSSystemsManager("/Codari/AwsAspCore/DataProtection");
 
-            services.AddSingleton<IAmazonDynamoDB, AmazonDynamoDBClient>();
-            services.AddSingleton<IAmazonS3, AmazonS3Client>();
-            services.AddSingleton<IAmazonRekognition, AmazonRekognitionClient>();
+            services.AddAWSService<IAmazonDynamoDB>();
+            services.AddAWSService<IAmazonS3>();
+            services.AddAWSService<IAmazonRekognition>();
+
+            services.AddDistributedDynamoDbCache(options =>
+            {
+                options.TableName = Environment.GetEnvironmentVariable("CACHE_TABLE_NAME");
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+            });
 
             services.AddRazorPages();
 
