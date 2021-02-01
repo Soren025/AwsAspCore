@@ -153,33 +153,7 @@
                 },
                 "RouteKey": "ANY /",
                 "Target": {
-                    "Fn::Sub": "integrations/${AspNetCoreHttpRootIntegration}"
-                }
-            }
-        },
-        "AspNetCoreHttpRootIntegration": {
-            "Type": "AWS::ApiGatewayV2::Integration",
-            "Properties": {
-                "ApiId": {
-                    "Ref": "AspNetCoreHttpApi"
-                },
-                "IntegrationType": "AWS_PROXY",
-                "PayloadFormatVersion": 2.0,
-                "IntegrationUri": {
-                    "Fn::Sub": [
-                        "arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${function}/invocations",
-                        {
-                            "region": {
-                                "Ref": "AWS::Region"
-                            },
-                            "function": {
-                                "Fn::GetAtt": [
-                                    "AspNetCoreFunction",
-                                    "Arn"
-                                ]
-                            }
-                        }
-                    ]
+                    "Fn::Sub": "integrations/${AspNetCoreHttpIntegration}"
                 }
             }
         },
@@ -191,11 +165,11 @@
                 },
                 "RouteKey": "ANY /{proxy+}",
                 "Target": {
-                    "Fn::Sub": "integrations/${AspNetCoreHttpProxyIntegration}"
+                    "Fn::Sub": "integrations/${AspNetCoreHttpIntegration}"
                 }
             }
         },
-        "AspNetCoreHttpProxyIntegration": {
+        "AspNetCoreHttpIntegration": {
             "Type": "AWS::ApiGatewayV2::Integration",
             "Properties": {
                 "ApiId": {
